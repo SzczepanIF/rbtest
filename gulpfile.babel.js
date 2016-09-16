@@ -1,4 +1,5 @@
 import gulp from 'gulp';
+import sass from 'gulp-sass';
 import gutil, { PluginError } from 'gulp-util';
 import source from 'vinyl-source-stream';
 import buffer from 'vinyl-buffer';
@@ -12,11 +13,11 @@ import babelify from 'babelify';
 import del from 'del';
 
 gulp.task('copy', () => {
-  return gulp.src(['src/index.html'])
+  return gulp.src(['src/*.html'])
     .pipe(gulp.dest('public'));
 });
 
-gulp.task('build', ['copy'], () => {
+gulp.task('build', ['clean', 'sass', 'copy'], () => {
   const b = browserify('src/index.js', { debug: true })
     .transform(babelify);
   return bundle(b);
@@ -31,11 +32,17 @@ gulp.task('watch', () => {
   return bundle(w)
 });
 
+gulp.task('sass', () => {
+  return gulp.src(['src/main.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('public'));
+});
+
 gulp.task('clean', () => {
   return del('public');
 });
 
-gulp.task('default', ['copy', 'watch']);
+gulp.task('default', ['build', 'watch']);
 
 function bundle(b) {
   return b.bundle()
