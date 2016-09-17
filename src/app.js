@@ -4,7 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/map';
 
+import { RbHeader } from './components/header/header';
+import { RbFooter } from './components/footer/footer';
+import { RbIndex } from './components/index/index';
+
+/*
 import { Greeter } from './services';
+
 
 @Component({
   selector: 'hello',
@@ -38,25 +44,27 @@ export class Linker {
     this.name = name;
   }
 }
-
+*/
 @Component({
-  selector: 'hello-app',
-  template: `
+  selector: 'rb-app',
+  template: '<rb-header></rb-header><rb-index></rb-index> <rb-footer></rb-footer>'
+
+  /*template: `
     <ul>
       <li><a [routerLink]="['/']">Hello</a></li>
       <li><a [routerLink]="['/ciao', 'ng2']">Ciao</a></li>
     </ul>
     <router-outlet></router-outlet>
     <linker name="GitHub" url="https://github.com/shuhei/babel-angular2-app"></linker>
-  `,
+  `,*/
 })
-export class HelloApp {
+
+export class RbApp {
 }
 
 const routing = RouterModule.forRoot([
-  { path: '', component: Hello },
-  { path: 'ciao/:name', component: Ciao },
-]);
+  { path: '/', component: RbApp }
+])
 
 @NgModule({
   imports: [
@@ -64,16 +72,16 @@ const routing = RouterModule.forRoot([
     routing,
   ],
   declarations: [
-    HelloApp,
-    Hello,
-    Ciao,
-    Linker,
-  ],
+    RbApp,
+    RbHeader,
+    RbIndex,
+    RbFooter
+  ],/*
   providers: [
     Greeter,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-  ],
-  bootstrap: [HelloApp],
+  ],*/
+  bootstrap: [RbApp],
 })
 export class AppModule {
 }

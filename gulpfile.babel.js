@@ -12,8 +12,10 @@ import babelify from 'babelify';
 
 import del from 'del';
 
+
+// MSZ - would think about npm html-loader here to use together with import for each component template
 gulp.task('copy', () => {
-  return gulp.src(['src/*.html'])
+  return gulp.src(['src/*.html', 'src/**/**/*.html'])
     .pipe(gulp.dest('public'));
 });
 

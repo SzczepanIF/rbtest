@@ -1,0 +1,25 @@
+//base
+$baseFontSize: 14px;
+$baseFontFamily: 'Helvetica, Verdana, Tahoma, Geneva';
+
+//colors
+
+$plainBgColor: #fff;
+$mainBgColor: #333;
+$secondaryBgColor: #fec544;
+
+//font colors
+$baseFontColor: #323232;
+$alternativeFontColor: #fff;
+
+//paddings
+$basePadding: 12px;
+$basePaddingHalf: $basePadding / 2;
+$basePaddingDouble: $basePadding * 2;
+
+
+body {
+	font-size: $baseFontSize;
+	font-family: $baseFontFamily;
+	background: $plainBgColor;
+}

@@ -1,19 +1,18 @@
-# Build Angular 2 app with Babel
+# RB FE Task
 
-A skeleton [Angular 2](https://angular.io/) app built with [Babel](https://babeljs.io/) and [Browserify](http://browserify.org/).
-
-- Uses Babel instead of [TypeScript](http://www.typescriptlang.org/)/[Traceur](https://github.com/google/traceur-compiler).
-- Supports class/parameter decorators and parameter type annotations with [Babel](https://github.com/babel/babel), [babel-plugin-transform-decorators-legacy](https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy) and [babel-plugin-angular2-annotations](https://github.com/shuhei/babel-plugin-angular2-annotations).
-- Bundles JavaScript files into one file with Browserify. (However, it doesn't use any Browserify-specific technology. You can easily switch to Webpack and etc.)
+Summary:
+FE Prototype using Angular 2.0 with ECMAScript 6 (Babel compiler), gulp, and all other typical stuff.
 
 ## Try
 
 ### Install
 
 Clone/fork this repo and:
+- make sure node version is > 4.0
 
 ```
 npm install
+npm install babel-register (needs to be installed seperately on some machines)
 ```
 
 ### Build
@@ -21,7 +20,7 @@ npm install
 Build once:
 
 ```
-npm run build
+gulp build
 ```
 
 Watch files and rebuild:
@@ -30,12 +29,14 @@ Watch files and rebuild:
 npm run watch
 # or
 npm start
+# or
+gulp watch
 ```
 
 ### Preview
 
 ```
-npm install -g http-server
+npm install -g http-server (needs to be installed globally)
 http-server public
 ```
 
@@ -58,17 +59,3 @@ e2e tests:
 ```
 npm run e2e
 ```
-
-## Motivation
-
-Back in the time of angular2 alpha.18, `angular/quickstart` provided us to try Angular 2 app with on-the-fly transpilation and lazy-loading, which resulted in long waiting time for each file change. Also, I was not familiar with the Traceur tool stack and its output. [angular2 npm package](https://www.npmjs.com/package/angular2) said *The files under /es6 are es6 compatible files that can be transpiled to es5 using any transpiler.* So I gave it a shot.
-
-## Babel transformer plugin
-
-To support type annotation, parameter decorator and property decorator without initializer, this skeleton app uses the following external Babel transform plugin that I made:
-
-- [babel-plugin-angular2-annotations](https://github.com/shuhei/babel-plugin-angular2-annotations)
-
-## License
-
-[ISC](https://opensource.org/licenses/ISC)
