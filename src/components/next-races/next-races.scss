@@ -1,0 +1,152 @@
+$moduleName: 'next-races';
+$moduleColorVariant: #383838;
+$moduleBorderColor: #333;
+$listColor: #686868;
+
+
+.#{$moduleName} {
+	@include standardBox($moduleColorVariant);
+	font-size: 12px;
+
+	&__title {
+		font-weight:bold;
+		padding: $basePadding $basePaddingHalf;
+		border-bottom: 2px solid #666;
+
+
+		.time {
+			float: right;
+			font-weight: normal;
+		}
+	}
+
+	&__info {
+		padding: $basePadding 0;
+		span {
+			font-weight: normal;
+			float: left;
+			border-right: 1px solid #666;
+			padding-right: 5px;
+			padding-left: 5px;
+
+			&:first-child {
+				padding-left: 0;
+			}
+
+			&:last-child {
+				float:right;
+				min-width: 40px;
+				height: 15px;
+				color: #fff;
+				border: none;
+				font-size: 18px;
+				padding:0 ;
+				text-align:right;
+			}
+		}
+		span.#{$moduleName}__prize {
+			border-right: none;
+		}
+	}
+
+
+
+	&__bet-list {
+		color: $listColor;
+		list-style: none;
+		background: #fff;
+		padding: 0;
+		margin: 0; 
+
+		li {
+			padding: $basePaddingDouble $basePadding;
+			border-bottom: 2px solid #ccc;
+			vertical-align: middle;
+			height: 20px;
+			line-height: 20px;
+
+			&:last-child {
+				border: none;
+			}
+		}
+
+		&__name {
+			display: inline-block;
+		}
+		img ~ &__name {
+			position: relative;
+			top: -10px;
+			padding-left: $basePaddingHalf;
+		}
+
+		&__odds {
+			@include goldenButton;
+			float: right;
+			min-width: 14px;
+		}
+	}
+}
+
+.filters {
+	margin: $basePadding $basePaddingHalf;
+	list-style: none;
+	display: flex;
+	box-sizing: border-box;
+	background: #fff;
+	border-radius: 5px;
+	padding:0;
+
+	li {
+		flex-basis: 25%;
+		box-sizing: border-box;
+		font-size: 24px;
+		color: #ddd;
+		padding-top: 10px;
+		text-align:center;
+		border-right: 1px solid #ccc;
+		cursor: pointer;
+		position: relative;
+		padding-left: 10px;
+
+		&:after {
+			position: absolute;
+			content: ' ';
+			background: #ddd;
+			border-radius: 50%;
+			width: 5px;
+			height: 5px;
+			top: 16px;
+			left: 10px;
+		}
+
+
+		&:last-child {
+			border-right: none;
+		}
+
+		&.active {
+			color: #333;
+
+			&:nth-child(1) {
+				&:after {
+					background: #3F8E17;
+				}
+			}
+			&:nth-child(2) {
+				&:after {
+					background: #2A51D2;
+				}
+			}
+			&:nth-child(3) {
+				&:after {
+					background: #EF7560;
+				}
+			}
+			&:nth-child(4) {
+				&:after {
+					background: #FDBC58
+				}
+			}
+		}
+	}
+}

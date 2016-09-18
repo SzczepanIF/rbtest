@@ -1,3 +1,32 @@
+$layoutWrapper:'layout__wrapper';
+
 body {
 	min-height: 100%;
+	background: #eee;
+}
+
+.#{$layoutWrapper} {
+	max-width: 1024px;
+	margin: 0 auto;
+	display: flex;
+	background: #fff;
+
+	.var_one_column {
+		.layout_column {
+			flex-basis: 100%;
+		}
+	}
+
+	.var_three_columns {
+		display: flex;
+
+		.layout_column {
+			flex-basis: 25%;
+			margin: $basePadding 0;
+		}
+	}
+
+	rb-app {
+		width: 100%;
+	}
 }

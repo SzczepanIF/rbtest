@@ -1,0 +1,38 @@
+<!-- would reconsider to use A2 pipes -->
+
+<div class="box next-races">
+	<ul class="filters">
+		<li class="icon-race-type-g" (click)="setFiltering('G');" [ngClass]="displayTypeGClass"></li>
+		<li class="icon-race-type-j" (click)="setFiltering('J');" [ngClass]="displayTypeJClass"></li>
+		<li class="icon-race-type-t" (click)="setFiltering('T');" [ngClass]="displayTypeTClass"></li>
+		<li class="icon-race-type-d" (click)="setFiltering('D');" [ngClass]="displayTypeDClass"></li>
+	</ul>
+	<div class="next-races__title">
+		<div class="next-races__place">
+			<img src="/flags/{{closestRaceData.event.country}}.png"> {{ closestRaceData.event.title }}
+			<span class="time">{{ closestRaceData.diff_time }} min</span>
+		</div>
+		<div class="next-races__info">
+			<span class="next-races__runners">
+				{{ closestRaceData.num_runners }} runners
+			</span>
+			<span class="next-races__distance">
+				{{ closestRaceData.distance }}m
+			</span>
+			<span class="next-races__prize">
+				{{ closestRaceData.purse.amount }} {{ closestRaceData.purse.currency }}
+			</span>
+			<span class="next-races__type-icon icon-race-type-{{closestRaceData.race_type.toLowerCase()}}">
+
+			</span>
+		</div>
+	</div>
+	<ul class="next-races__bet-list">
+		<li *ngFor="let runner of closestRaceData.runners">
+			<img *ngIf="runner.silk !== ''" src="/silks/{{runner.silk}}">
+			<span class="next-races__bet-list__name">{{runner.name}}</span>
+
+			<span class="next-races__bet-list__odds">{{runner.odds.toFixed(2)}}</span>
+		</li>
+	</ul>
+</div>

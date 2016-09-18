@@ -15,7 +15,7 @@ import del from 'del';
 
 // MSZ - would think about npm html-loader here to use together with import for each component template
 gulp.task('copy', () => {
-  return gulp.src(['src/*.html', 'src/**/**/*.html'])
+  return gulp.src(['src/*.html', 'src/**/**/*.html', 'src/next_races.json', 'src/assets/img/**/*.png'])
     .pipe(gulp.dest('public'));
 });
 
