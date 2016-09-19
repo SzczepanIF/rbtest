@@ -51687,13 +51687,13 @@ var _http = require('@angular/http');
 require('rxjs/add/operator/map');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
 
 Array.prototype.contains = function (obj) {
-   var i = this.length;
-   while (i--) {
-      if (this[i] == obj) {
-         return true;
-      }
-   }
-   return false;
+  var i = this.length;
+  while (i--) {
+    if (this[i] == obj) {
+      return true;
+    }
+  }
+  return false;
 };var
 
 
@@ -51702,142 +51702,143 @@ Array.prototype.contains = function (obj) {
 
 
 NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-races', templateUrl: './components/next-races/next-races.html' }), _dec(_class = function () {
-   function NextRaces(http, ref) {_classCallCheck(this, NextRaces);
-      this.http = http;
-      this.nextRacesData = {};
-      this.closestRaceData = this.getInitialRaceDataStructure();
-      //I would use that for js timestamp while checking with callback timestamp included in json, for this task I use static generated value
-      //this.currentTime = new Date().getTime();
-      this.currentTime = 1429890900;
-      this.ref = ref;
-      this.displayTypeD = true;
-      this.displayTypeG = true;
-      this.displayTypeJ = true;
-      this.displayTypeT = true;
-      this.displayTypeDClass = 'active';
-      this.displayTypeGClass = 'active';
-      this.displayTypeJClass = 'active';
-      this.displayTypeTClass = 'active';
+  function NextRaces(http, ref) {_classCallCheck(this, NextRaces);
+    this.http = http;
+    this.nextRacesData = {};
+    this.closestRaceData = this.getInitialRaceDataStructure();
+    //I would use that for js timestamp while checking with callback timestamp included in json, for this task I use static generated value
+    //this.currentTime = new Date().getTime();
+    this.currentTime = 1429890900;
+    this.ref = ref;
+    this.displayTypeD = true;
+    this.displayTypeG = true;
+    this.displayTypeJ = true;
+    this.displayTypeT = true;
+    this.displayTypeDClass = 'active';
+    this.displayTypeGClass = 'active';
+    this.displayTypeJClass = 'active';
+    this.displayTypeTClass = 'active';
 
-   }_createClass(NextRaces, [{ key: 'ngOnInit', value: function ngOnInit()
+  }_createClass(NextRaces, [{ key: 'ngOnInit', value: function ngOnInit()
 
-      {
-         this.getNextRacesData();
-      } }, { key: 'getNextRacesData', value: function getNextRacesData()
+    {
+      this.getNextRacesData();
+    } }, { key: 'getNextRacesData', value: function getNextRacesData()
 
-      {var _this = this;
-         this.http.get('./next_races.json').
-         map(function (res) {return res.json();}).
-         subscribe(
-         function (res) {_this.nextRacesData = res;},
-         function (err) {return console.error(err);},
-         function () {
-            if (_this.nextRacesData.status === 'success')
-            _this.nextRacesData.filter_types = ["T", "D", "G", "J"];
-            _this.closestRaceData = _this.nextRacesData.data.races[0];
-            _this.getLatestRace();
-         });
-
-
-      } }, { key: 'getInitialRaceDataStructure', value: function getInitialRaceDataStructure()
-
-      {
-         return {
-            "id_race": null,
-            "event": {
-               "title": "",
-               "country": "" },
-
-            "race_type": "",
-            "post_time": null,
-            "diff_time": null,
-            "num_runners": null,
-            "distance": null,
-            "purse": {
-               "amount": null,
-               "currency": null },
-
-            "runners": [
-            {
-               "id_runner": null,
-               "name": "",
-               "odds": 0,
-               "silk": "" },
-
-            {
-               "id_runner": null,
-               "name": "",
-               "odds": 0,
-               "silk": "" },
-
-            {
-               "id_runner": null,
-               "name": "",
-               "odds": 0,
-               "silk": "" }],
+    {var _this = this;
+      this.http.get('./next_races.json').
+      map(function (res) {return res.json();}).
+      subscribe(
+      function (res) {_this.nextRacesData = res;},
+      function (err) {return console.error(err);},
+      function () {
+        if (_this.nextRacesData.status === 'success')
+        _this.nextRacesData.filter_types = ["T", "D", "G", "J"];
+        _this.closestRaceData = _this.nextRacesData.data.races[0];
+        _this.getLatestRace();
+      });
 
 
-            //additional property
-            "filter_types": ["T", "D", "G", "J"] };
+    } }, { key: 'getInitialRaceDataStructure', value: function getInitialRaceDataStructure()
 
-      } }, { key: 'getLatestRace', value: function getLatestRace()
+    {
+      return {
+        "id_race": null,
+        "event": {
+          "title": "",
+          "country": "" },
 
-      {
+        "race_type": "",
+        "post_time": null,
+        "diff_time": null,
+        "num_runners": null,
+        "distance": null,
+        "purse": {
+          "amount": null,
+          "currency": null },
 
-         console.log(this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type));
+        "runners": [
+        {
+          "id_runner": null,
+          "name": "",
+          "odds": 0,
+          "silk": "" },
 
-         if (this.currentTime > this.closestRaceData.post_time || !this.nextRacesData.filter_types.contains(this.closestRaceData.race_type)) {
-            for (var i = 0; i < this.nextRacesData.data.races.length; i++) {
-               if (this.currentTime < this.nextRacesData.data.races[i].post_time && this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type))
-               this.closestRaceData = this.nextRacesData.data.races[i];
-               this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
-               i = this.nextRacesData.data.races.length;
+        {
+          "id_runner": null,
+          "name": "",
+          "odds": 0,
+          "silk": "" },
 
-               if (i === this.nextRacesData.data.races.length - 1) {
-                  this.getNextRacesData();
-               }
-            }
-         } else {
-            this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
-         }
+        {
+          "id_runner": null,
+          "name": "",
+          "odds": 0,
+          "silk": "" }],
 
-      } }, { key: 'setFiltering', value: function setFiltering(
 
-      race_type) {
-         this.setButtons(race_type);
+        //additional property
+        "filter_types": ["T", "D", "G", "J"] };
 
-         if (this.nextRacesData.filter_types.contains(race_type)) {
-            var i = this.nextRacesData.filter_types.indexOf(race_type);
-            if (i != -1) {
-               this.nextRacesData.filter_types.splice(i, 1);
-               this.getLatestRace();
-            }
-         } else {
-            this.nextRacesData.filter_types.push(race_type);
-            this.getLatestRace();
-         }
-      } }, { key: 'setButtons', value: function setButtons(
+    } }, { key: 'getLatestRace', value: function getLatestRace()
 
-      race_type) {
-         switch (race_type) {
-            case 'D':
-               this.displayTypeD = !this.displayTypeD;
-               this.displayTypeDClass = this.displayTypeD ? 'active' : '';
-               break;
-            case 'T':
-               this.displayTypeT = !this.displayTypeT;
-               this.displayTypeTClass = this.displayTypeT ? 'active' : '';
-               break;
-            case 'G':
-               this.displayTypeG = !this.displayTypeG;
-               this.displayTypeGClass = this.displayTypeG ? 'active' : '';
-               break;
-            case 'J':
-               this.displayTypeJ = !this.displayTypeJ;
-               this.displayTypeJClass = this.displayTypeJ ? 'active' : '';
-               break;}
+    {
+      for (var i = 0; i < this.nextRacesData.data.races.length; i++) {
+        if (this.currentTime < this.nextRacesData.data.races[i].post_time && this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type) === true) {
+          this.closestRaceData = this.nextRacesData.data.races[i];
+          this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
+          i = this.nextRacesData.data.races.length;
+          this.ref.tick();
+        }
 
-      } }]);return NextRaces;}()) || _class);Reflect.defineMetadata('design:paramtypes', [_http.Http, _core.ApplicationRef], NextRaces);
+        if (i === this.nextRacesData.data.races.length - 1) {
+          this.getNextRacesData();
+        }
+      }
+      this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
+    } }, { key: 'setFiltering', value: function setFiltering(
+
+    race_type) {var _this2 = this;
+      this.setButtons(race_type);
+
+      if (this.nextRacesData.filter_types.contains(race_type)) {
+        var i = this.nextRacesData.filter_types.indexOf(race_type);
+        if (i != -1) {
+          this.nextRacesData.filter_types.splice(i, 1);
+          setTimeout(function () {
+            console.log(_this2.nextRacesData.filter_types);
+            _this2.getLatestRace();
+          });
+        }
+      } else {
+        this.nextRacesData.filter_types.push(race_type);
+        setTimeout(function () {
+          console.log(_this2.nextRacesData.filter_types);
+          _this2.getLatestRace();
+        });
+      }
+    } }, { key: 'setButtons', value: function setButtons(
+
+    race_type) {
+      switch (race_type) {
+        case 'D':
+          this.displayTypeD = !this.displayTypeD;
+          this.displayTypeDClass = this.displayTypeD ? 'active' : '';
+          break;
+        case 'T':
+          this.displayTypeT = !this.displayTypeT;
+          this.displayTypeTClass = this.displayTypeT ? 'active' : '';
+          break;
+        case 'G':
+          this.displayTypeG = !this.displayTypeG;
+          this.displayTypeGClass = this.displayTypeG ? 'active' : '';
+          break;
+        case 'J':
+          this.displayTypeJ = !this.displayTypeJ;
+          this.displayTypeJClass = this.displayTypeJ ? 'active' : '';
+          break;}
+
+    } }]);return NextRaces;}()) || _class);Reflect.defineMetadata('design:paramtypes', [_http.Http, _core.ApplicationRef], NextRaces);
 
 },{"@angular/core":3,"@angular/http":4,"rxjs/add/operator/map":315}],358:[function(require,module,exports){
 'use strict';require('babel-polyfill');

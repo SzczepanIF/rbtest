@@ -39,23 +39,3 @@ gulp watch
 npm install -g http-server (needs to be installed globally)
 http-server public
 ```
-
-### Test
-
-Unit and e2e tests:
-
-```
-npm test
-```
-
-Unit tests:
-
-```
-npm run unit
-```
-
-e2e tests:
-
-```
-npm run e2e
-```

@@ -40,7 +40,7 @@ export class NextRaces {
   ngOnInit() {
     this.getNextRacesData();
   }
- 
+
   getNextRacesData() {
     this.http.get('./next_races.json')
       .map((res:Response) => res.json())
@@ -99,25 +99,19 @@ export class NextRaces {
    }
 
    getLatestRace() {
+        for (var i = 0; i < this.nextRacesData.data.races.length; i++) {
+          if ((this.currentTime < this.nextRacesData.data.races[i].post_time) && (this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type) === true)) {
+            this.closestRaceData = this.nextRacesData.data.races[i];
+            this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime)/1000/60))
+            i = this.nextRacesData.data.races.length;
+            this.ref.tick();
+          }
 
-   	console.log( this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type));
-
-   	  if (this.currentTime > this.closestRaceData.post_time || !(this.nextRacesData.filter_types.contains(this.closestRaceData.race_type)) ) {
-   	  	for (var i = 0; i < this.nextRacesData.data.races.length; i++) {
-   	  	
-   	  		if (this.currentTime < this.nextRacesData.data.races[i].post_time && this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type))
-   	  			this.closestRaceData = this.nextRacesData.data.races[i];
-   	  			this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime)/1000/60))
-   	  			i = this.nextRacesData.data.races.length;
-
-   	  		if (i === this.nextRacesData.data.races.length -1) {
-   	  			this.getNextRacesData();
-   	  		}
-   	  	}
-   	  } else {
+          if (i === this.nextRacesData.data.races.length -1) {
+            this.getNextRacesData();
+          }
+        }
    	  	this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime)/1000/60));
-   	  }
-
    }
 
    setFiltering(race_type) {
@@ -127,11 +121,17 @@ export class NextRaces {
     	var i = this.nextRacesData.filter_types.indexOf(race_type);
 		if(i != -1) {
 			this.nextRacesData.filter_types.splice(i, 1);
-			this.getLatestRace();
+      setTimeout(() =>  {
+        console.log(this.nextRacesData.filter_types);
+        this.getLatestRace();
+      });
 		}
     } else {
     	this.nextRacesData.filter_types.push(race_type);
-    	this.getLatestRace();
+      setTimeout(() => {
+          console.log(this.nextRacesData.filter_types);
+          this.getLatestRace();
+      });
     }
    }
 
@@ -141,15 +141,15 @@ export class NextRaces {
    				this.displayTypeD = !this.displayTypeD;
    				this.displayTypeDClass = this.displayTypeD ? 'active' : '';
    				break;
-   		   	case 'T':
+   		  case 'T':
    				this.displayTypeT = !this.displayTypeT;
    				this.displayTypeTClass = this.displayTypeT ? 'active' : '';
-   				break;
-   		   	case 'G':
+   		     break;
+   	    case 'G':
    				this.displayTypeG = !this.displayTypeG;
    				this.displayTypeGClass = this.displayTypeG ? 'active' : '';
    				break;
-   		   	case 'J':
+   	    case 'J':
    				this.displayTypeJ = !this.displayTypeJ;
    				this.displayTypeJClass = this.displayTypeJ ? 'active' : '';
    				break;
