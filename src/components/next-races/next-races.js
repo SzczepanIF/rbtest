@@ -1,7 +1,5 @@
-import { Component, ApplicationRef } from '@angular/core';
-import { Http, Response} from '@angular/http';
-import 'rxjs/add/operator/map';
-
+import { Component } from '@angular/core';
+import { NextRacesService } from '../../services';
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
@@ -18,14 +16,14 @@ Array.prototype.contains = function(obj) {
 })
 
 export class NextRaces {
-  constructor(http: Http, ref: ApplicationRef) {
-  	this.http = http;
+
+  constructor(nextRacesService: NextRacesService) {
   	this.nextRacesData = {};
-  	this.closestRaceData = this.getInitialRaceDataStructure();
+    this.nextRacesService = nextRacesService;
+    console.log(this.nextRacesService);
   	//I would use that for js timestamp while checking with callback timestamp included in json, for this task I use static generated value
   	//this.currentTime = new Date().getTime();
   	this.currentTime = 1429890900;
-  	this.ref = ref;
   	this.displayTypeD = true;
   	this.displayTypeG = true;
   	this.displayTypeJ = true;
@@ -34,6 +32,7 @@ export class NextRaces {
   	this.displayTypeGClass = 'active';
   	this.displayTypeJClass = 'active';
   	this.displayTypeTClass = 'active';
+    this.getNextRacesData();
 
   }
 
@@ -42,117 +41,19 @@ export class NextRaces {
   }
 
   getNextRacesData() {
-    this.http.get('./next_races.json')
-      .map((res:Response) => res.json())
-      .subscribe(
-        res => { this.nextRacesData = res},
-        err => console.error(err),
-        () => {
-        	if (this.nextRacesData.status === 'success')
-        		this.nextRacesData.filter_types =  ["T", "D", "G", "J"];
-        	   	this.closestRaceData = this.nextRacesData.data.races[0];
-        		this.getLatestRace();
-        }
-      );
+    this.nextRacesData = this.nextRacesService.getNextRaces();
+    console.log(this.nextRacesData);
+  }
 
-   }
+  getLatestRace() {
 
-   getInitialRaceDataStructure() {
-   	return {
-		"id_race": null,
-		"event": {
-		  "title": "",
-		  "country": ""
-		},
-		"race_type": "",
-		"post_time": null,
-		"diff_time": null,
-		"num_runners": null,
-		"distance": null,
-		"purse": {
-		  "amount": null,
-		  "currency": null
-		},
-		"runners": [
-		  {
-		    "id_runner": null,
-		    "name": "",
-		    "odds": 0,
-		    "silk": ""
-		  },
-		  {
-		    "id_runner": null,
-		    "name": "",
-		    "odds": 0,
-		    "silk": ""
-		  },
-		  {
-		    "id_runner": null,
-		    "name": "",
-		    "odds": 0,
-		    "silk": ""
-		  }
-		],
-		//additional property
-		"filter_types": ["T", "D", "G", "J"]
-  	}
-   }
+  }
 
-   getLatestRace() {
-        for (var i = 0; i < this.nextRacesData.data.races.length; i++) {
-          if ((this.currentTime < this.nextRacesData.data.races[i].post_time) && (this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type) === true)) {
-            this.closestRaceData = this.nextRacesData.data.races[i];
-            this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime)/1000/60))
-            i = this.nextRacesData.data.races.length;
-            this.ref.tick();
-          }
+  setFiltering() {
 
-          if (i === this.nextRacesData.data.races.length -1) {
-            this.getNextRacesData();
-          }
-        }
-   	  	this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime)/1000/60));
-   }
+  }
 
-   setFiltering(race_type) {
-   	this.setButtons(race_type);
+  setButtons() {
 
-    if ( this.nextRacesData.filter_types.contains(race_type)) {
-    	var i = this.nextRacesData.filter_types.indexOf(race_type);
-		if(i != -1) {
-			this.nextRacesData.filter_types.splice(i, 1);
-      setTimeout(() =>  {
-        console.log(this.nextRacesData.filter_types);
-        this.getLatestRace();
-      });
-		}
-    } else {
-    	this.nextRacesData.filter_types.push(race_type);
-      setTimeout(() => {
-          console.log(this.nextRacesData.filter_types);
-          this.getLatestRace();
-      });
-    }
-   }
-
-   setButtons(race_type) {
-   		switch(race_type) {
-   			case 'D':
-   				this.displayTypeD = !this.displayTypeD;
-   				this.displayTypeDClass = this.displayTypeD ? 'active' : '';
-   				break;
-   		  case 'T':
-   				this.displayTypeT = !this.displayTypeT;
-   				this.displayTypeTClass = this.displayTypeT ? 'active' : '';
-   		     break;
-   	    case 'G':
-   				this.displayTypeG = !this.displayTypeG;
-   				this.displayTypeGClass = this.displayTypeG ? 'active' : '';
-   				break;
-   	    case 'J':
-   				this.displayTypeJ = !this.displayTypeJ;
-   				this.displayTypeJClass = this.displayTypeJ ? 'active' : '';
-   				break;
-   		}
-   }
+  }
 }

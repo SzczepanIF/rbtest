@@ -51597,6 +51597,8 @@ var _router = require('@angular/router');
 var _http = require('@angular/http');
 require('rxjs/add/operator/map');
 
+var _services = require('./services');
+
 var _header = require('./components/header/header');
 var _footer = require('./components/footer/footer');
 var _index = require('./components/index/index');
@@ -51643,9 +51645,10 @@ var routing = _router.RouterModule.forRoot([
 
 
 
-AppModule = exports.AppModule = (_dec3 = (0, _core.NgModule)({ imports: [_platformBrowser.BrowserModule, routing, _http.HttpModule], declarations: [RbApp, _header.RbHeader, _nextRaces.NextRaces, _index.RbIndex, _footer.RbFooter, EmptyComponent], providers: [{ provide: _common.LocationStrategy, useClass: _common.HashLocationStrategy }], bootstrap: [RbApp] }), _dec3(_class3 = function AppModule() {_classCallCheck(this, AppModule);}) || _class3);
 
-},{"./components/footer/footer":354,"./components/header/header":355,"./components/index/index":356,"./components/next-races/next-races":357,"@angular/common":1,"@angular/core":3,"@angular/http":4,"@angular/platform-browser":6,"@angular/router":7,"rxjs/add/operator/map":315}],354:[function(require,module,exports){
+AppModule = exports.AppModule = (_dec3 = (0, _core.NgModule)({ imports: [_platformBrowser.BrowserModule, routing, _http.HttpModule], declarations: [RbApp, _header.RbHeader, _nextRaces.NextRaces, _index.RbIndex, _footer.RbFooter, EmptyComponent], providers: [_services.NextRacesService, { provide: _common.LocationStrategy, useClass: _common.HashLocationStrategy }], bootstrap: [RbApp] }), _dec3(_class3 = function AppModule() {_classCallCheck(this, AppModule);}) || _class3);
+
+},{"./components/footer/footer":354,"./components/header/header":355,"./components/index/index":356,"./components/next-races/next-races":357,"./services":359,"@angular/common":1,"@angular/core":3,"@angular/http":4,"@angular/platform-browser":6,"@angular/router":7,"rxjs/add/operator/map":315}],354:[function(require,module,exports){
 'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.RbFooter = undefined;var _dec, _class;var _core = require('@angular/core');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
 
 
@@ -51683,9 +51686,7 @@ function RbIndex() {_classCallCheck(this, RbIndex);
 
 },{"@angular/core":3}],357:[function(require,module,exports){
 'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NextRaces = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _dec, _class;var _core = require('@angular/core');
-var _http = require('@angular/http');
-require('rxjs/add/operator/map');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
-
+var _services = require('../../services');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
 Array.prototype.contains = function (obj) {
   var i = this.length;
   while (i--) {
@@ -51702,14 +51703,14 @@ Array.prototype.contains = function (obj) {
 
 
 NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-races', templateUrl: './components/next-races/next-races.html' }), _dec(_class = function () {
-  function NextRaces(http, ref) {_classCallCheck(this, NextRaces);
-    this.http = http;
+
+  function NextRaces(nextRacesService) {_classCallCheck(this, NextRaces);
     this.nextRacesData = {};
-    this.closestRaceData = this.getInitialRaceDataStructure();
+    this.nextRacesService = nextRacesService;
+    console.log(this.nextRacesService);
     //I would use that for js timestamp while checking with callback timestamp included in json, for this task I use static generated value
     //this.currentTime = new Date().getTime();
     this.currentTime = 1429890900;
-    this.ref = ref;
     this.displayTypeD = true;
     this.displayTypeG = true;
     this.displayTypeJ = true;
@@ -51718,129 +51719,30 @@ NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-r
     this.displayTypeGClass = 'active';
     this.displayTypeJClass = 'active';
     this.displayTypeTClass = 'active';
+    this.getNextRacesData();
 
   }_createClass(NextRaces, [{ key: 'ngOnInit', value: function ngOnInit()
 
     {
-      this.getNextRacesData();
     } }, { key: 'getNextRacesData', value: function getNextRacesData()
 
-    {var _this = this;
-      this.http.get('./next_races.json').
-      map(function (res) {return res.json();}).
-      subscribe(
-      function (res) {_this.nextRacesData = res;},
-      function (err) {return console.error(err);},
-      function () {
-        if (_this.nextRacesData.status === 'success')
-        _this.nextRacesData.filter_types = ["T", "D", "G", "J"];
-        _this.closestRaceData = _this.nextRacesData.data.races[0];
-        _this.getLatestRace();
-      });
-
-
-    } }, { key: 'getInitialRaceDataStructure', value: function getInitialRaceDataStructure()
-
     {
-      return {
-        "id_race": null,
-        "event": {
-          "title": "",
-          "country": "" },
-
-        "race_type": "",
-        "post_time": null,
-        "diff_time": null,
-        "num_runners": null,
-        "distance": null,
-        "purse": {
-          "amount": null,
-          "currency": null },
-
-        "runners": [
-        {
-          "id_runner": null,
-          "name": "",
-          "odds": 0,
-          "silk": "" },
-
-        {
-          "id_runner": null,
-          "name": "",
-          "odds": 0,
-          "silk": "" },
-
-        {
-          "id_runner": null,
-          "name": "",
-          "odds": 0,
-          "silk": "" }],
-
-
-        //additional property
-        "filter_types": ["T", "D", "G", "J"] };
-
+      this.nextRacesData = this.nextRacesService.nextRacesData.data.races[0];
     } }, { key: 'getLatestRace', value: function getLatestRace()
 
     {
-      for (var i = 0; i < this.nextRacesData.data.races.length; i++) {
-        if (this.currentTime < this.nextRacesData.data.races[i].post_time && this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type) === true) {
-          this.closestRaceData = this.nextRacesData.data.races[i];
-          this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
-          i = this.nextRacesData.data.races.length;
-          this.ref.tick();
-        }
 
-        if (i === this.nextRacesData.data.races.length - 1) {
-          this.getNextRacesData();
-        }
-      }
-      this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
-    } }, { key: 'setFiltering', value: function setFiltering(
+    } }, { key: 'setFiltering', value: function setFiltering()
 
-    race_type) {var _this2 = this;
-      this.setButtons(race_type);
+    {
 
-      if (this.nextRacesData.filter_types.contains(race_type)) {
-        var i = this.nextRacesData.filter_types.indexOf(race_type);
-        if (i != -1) {
-          this.nextRacesData.filter_types.splice(i, 1);
-          setTimeout(function () {
-            console.log(_this2.nextRacesData.filter_types);
-            _this2.getLatestRace();
-          });
-        }
-      } else {
-        this.nextRacesData.filter_types.push(race_type);
-        setTimeout(function () {
-          console.log(_this2.nextRacesData.filter_types);
-          _this2.getLatestRace();
-        });
-      }
-    } }, { key: 'setButtons', value: function setButtons(
+    } }, { key: 'setButtons', value: function setButtons()
 
-    race_type) {
-      switch (race_type) {
-        case 'D':
-          this.displayTypeD = !this.displayTypeD;
-          this.displayTypeDClass = this.displayTypeD ? 'active' : '';
-          break;
-        case 'T':
-          this.displayTypeT = !this.displayTypeT;
-          this.displayTypeTClass = this.displayTypeT ? 'active' : '';
-          break;
-        case 'G':
-          this.displayTypeG = !this.displayTypeG;
-          this.displayTypeGClass = this.displayTypeG ? 'active' : '';
-          break;
-        case 'J':
-          this.displayTypeJ = !this.displayTypeJ;
-          this.displayTypeJClass = this.displayTypeJ ? 'active' : '';
-          break;}
+    {
 
-    } }]);return NextRaces;}()) || _class);Reflect.defineMetadata('design:paramtypes', [_http.Http, _core.ApplicationRef], NextRaces);
+    } }]);return NextRaces;}()) || _class);Reflect.defineMetadata('design:paramtypes', [_services.NextRacesService], NextRaces);
 
-},{"@angular/core":3,"@angular/http":4,"rxjs/add/operator/map":315}],358:[function(require,module,exports){
+},{"../../services":359,"@angular/core":3}],358:[function(require,module,exports){
 'use strict';require('babel-polyfill');
 require('zone.js/dist/zone');
 
@@ -51850,7 +51752,33 @@ var _app = require('./app');
 
 (0, _platformBrowserDynamic.platformBrowserDynamic)().bootstrapModule(_app.AppModule);
 
-},{"./app":353,"@angular/platform-browser-dynamic":5,"babel-polyfill":8,"zone.js/dist/zone":352}]},{},[358])
+},{"./app":353,"@angular/platform-browser-dynamic":5,"babel-polyfill":8,"zone.js/dist/zone":352}],359:[function(require,module,exports){
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NextRacesService = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _core = require('@angular/core');
+var _http = require('@angular/http');
+require('rxjs/add/operator/map');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
+
+
+NextRacesService = exports.NextRacesService = function () {
+
+  function NextRacesService(http) {_classCallCheck(this, NextRacesService);
+    this.http = http;
+    this.nextRacesData = {};
+  }_createClass(NextRacesService, [{ key: 'getNextRaces', value: function getNextRaces()
+
+    {var _this = this;
+      this.http.get('./next_races.json').
+      map(function (res) {return res.json();}).
+      subscribe(
+      function (res) {_this.nextRacesData = res;},
+      function (err) {return console.error(err);},
+      function () {
+        if (_this.nextRacesData.status === 'success')
+        console.log(_this.nextRacesData.status);
+        return _this.nextRacesData.data.races[0];
+      });
+    } }]);return NextRacesService;}();Reflect.defineMetadata('design:paramtypes', [_http.Http], NextRacesService);
+
+},{"@angular/core":3,"@angular/http":4,"rxjs/add/operator/map":315}]},{},[358])
 
 
 //# sourceMappingURL=bundle.js.map
