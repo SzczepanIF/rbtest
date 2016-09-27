@@ -11,6 +11,8 @@ import { RbHeader } from './components/header/header';
 import { RbFooter } from './components/footer/footer';
 import { RbIndex } from './components/index/index';
 
+import { RaceTypePipe } from './pipes/race-type-pipe';
+
 import { NextRaces } from './components/next-races/next-races';
 
 @Component({
@@ -46,6 +48,7 @@ const routing = RouterModule.forRoot([
     NextRaces,
     RbIndex,
     RbFooter,
+    RaceTypePipe,
     EmptyComponent
   ],
   providers: [

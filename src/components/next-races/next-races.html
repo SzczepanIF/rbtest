@@ -2,37 +2,41 @@
 
 <div class="box next-races">
 	<ul class="filters">
-		<li class="icon-race-type-g" (click)="setFiltering();" [ngClass]="displayTypeGClass"></li>
-		<li class="icon-race-type-j" (click)="setFiltering();" [ngClass]="displayTypeJClass"></li>
-		<li class="icon-race-type-t" (click)="setFiltering();" [ngClass]="displayTypeTClass"></li>
-		<li class="icon-race-type-d" (click)="setFiltering();" [ngClass]="displayTypeDClass"></li>
+		<li class="icon-race-type-g" (click)="setFiltering('G');" [ngClass]="displayTypeGClass"></li>
+		<li class="icon-race-type-j" (click)="setFiltering('J');" [ngClass]="displayTypeJClass"></li>
+		<li class="icon-race-type-t" (click)="setFiltering('T');" [ngClass]="displayTypeTClass"></li>
+		<li class="icon-race-type-d" (click)="setFiltering('D');" [ngClass]="displayTypeDClass"></li>
 	</ul>
-	<div class="next-races__title">
-		<div class="next-races__place">
-			<img src="/flags/{{nextRacesData.event.country}}.png"> {{ nextRacesData.event.title }}
-			<span class="time">{{ nextRacesData.diff_time }} min</span>
-		</div>
-		<div class="next-races__info">
-			<span class="next-races__runners">
-				{{ nextRacesData.num_runners }} runners
-			</span>
-			<span class="next-races__distance">
-				{{ nextRacesData.distance }}m
-			</span>
-			<span class="next-races__prize">
-				{{ nextRacesData.purse.amount }} {{ nextRacesData.purse.currency }}
-			</span>
-			<span class="next-races__type-icon icon-race-type-{{nextRacesData.race_type.toLowerCase()}}">
+	<div class="wrapper" *ngFor="let i = index; let race of nextRacesData.races | RaceTypePipe:activeFilters">
+		 <template [ngIf]="i<1 && race.post_time > 0">
+			<div class="next-races__title">
+				<div class="next-races__place">
+					<img src="/flags/{{race.event.country}}.png"> {{ race.event.title }} 
+					<span class="time">{{ race.post_time }} min</span>
+				</div>
+				<div class="next-races__info">
+					<span class="next-races__runners">
+						{{ race.num_runners }} runners
+					</span>
+					<span class="next-races__distance">
+						{{ race.distance }}m
+					</span>
+					<span class="next-races__prize">
+						{{ race.purse.amount }} {{ race.purse.currency }}
+					</span>
+					<span class="next-races__type-icon icon-race-type-{{race.race_type.toLowerCase()}}">
 
-			</span>
-		</div>
+					</span>
+				</div>
+			</div>
+			<ul class="next-races__bet-list">
+				<li *ngFor="let runner of race.runners">
+					<img *ngIf="runner.silk !== ''" src="/silks/{{runner.silk}}">
+					<span class="next-races__bet-list__name">{{runner.name}}</span>
+
+					<span class="next-races__bet-list__odds">{{runner.odds.toFixed(2)}}</span>
+				</li>
+			</ul>
+		</template>
 	</div>
-	<ul class="next-races__bet-list">
-		<li *ngFor="let runner of nextRacesData.runners">
-			<img *ngIf="runner.silk !== ''" src="/silks/{{runner.silk}}">
-			<span class="next-races__bet-list__name">{{name}}</span>
-
-			<span class="next-races__bet-list__odds">{{runner.odds.toFixed(2)}}</span>
-		</li>
-	</ul>
 </div>
