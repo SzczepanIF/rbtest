@@ -1,17 +1,29 @@
-//unused
+import {Pipe} from '@angular/core';
 
-import {Pipe} from 'angular2/core';
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] == obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 @Pipe({
-  name: 'RaceTypePipe'
+  name: 'RaceTypePipe',
+  pure: false
 })
+
 export class RaceTypePipe {
 
-  transform(value, args?) {
-    // ES6 array destructuring
-    let [raceTypes] = args;
-    return value.filter(this.closestRaceData => {
-      return this.closestRaceData.raceType !== raceTypes
+  transform(value, args) {
+
+    let raceTypes = args;
+
+    return value.filter(race => {
+      return raceTypes.contains(race.race_type)
   	});
   }
 }

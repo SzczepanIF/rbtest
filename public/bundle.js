@@ -51597,9 +51597,13 @@ var _router = require('@angular/router');
 var _http = require('@angular/http');
 require('rxjs/add/operator/map');
 
+var _services = require('./services');
+
 var _header = require('./components/header/header');
 var _footer = require('./components/footer/footer');
 var _index = require('./components/index/index');
+
+var _raceTypePipe = require('./pipes/race-type-pipe');
 
 var _nextRaces = require('./components/next-races/next-races');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
 
@@ -51643,9 +51647,11 @@ var routing = _router.RouterModule.forRoot([
 
 
 
-AppModule = exports.AppModule = (_dec3 = (0, _core.NgModule)({ imports: [_platformBrowser.BrowserModule, routing, _http.HttpModule], declarations: [RbApp, _header.RbHeader, _nextRaces.NextRaces, _index.RbIndex, _footer.RbFooter, EmptyComponent], providers: [{ provide: _common.LocationStrategy, useClass: _common.HashLocationStrategy }], bootstrap: [RbApp] }), _dec3(_class3 = function AppModule() {_classCallCheck(this, AppModule);}) || _class3);
 
-},{"./components/footer/footer":354,"./components/header/header":355,"./components/index/index":356,"./components/next-races/next-races":357,"@angular/common":1,"@angular/core":3,"@angular/http":4,"@angular/platform-browser":6,"@angular/router":7,"rxjs/add/operator/map":315}],354:[function(require,module,exports){
+
+AppModule = exports.AppModule = (_dec3 = (0, _core.NgModule)({ imports: [_platformBrowser.BrowserModule, routing, _http.HttpModule], declarations: [RbApp, _header.RbHeader, _nextRaces.NextRaces, _index.RbIndex, _footer.RbFooter, _raceTypePipe.RaceTypePipe, EmptyComponent], providers: [_services.NextRacesService, { provide: _common.LocationStrategy, useClass: _common.HashLocationStrategy }], bootstrap: [RbApp] }), _dec3(_class3 = function AppModule() {_classCallCheck(this, AppModule);}) || _class3);
+
+},{"./components/footer/footer":354,"./components/header/header":355,"./components/index/index":356,"./components/next-races/next-races":357,"./pipes/race-type-pipe":359,"./services":360,"@angular/common":1,"@angular/core":3,"@angular/http":4,"@angular/platform-browser":6,"@angular/router":7,"rxjs/add/operator/map":315}],354:[function(require,module,exports){
 'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.RbFooter = undefined;var _dec, _class;var _core = require('@angular/core');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
 
 
@@ -51683,8 +51689,8 @@ function RbIndex() {_classCallCheck(this, RbIndex);
 
 },{"@angular/core":3}],357:[function(require,module,exports){
 'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NextRaces = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _dec, _class;var _core = require('@angular/core');
-var _http = require('@angular/http');
-require('rxjs/add/operator/map');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
+var _services = require('../../services');
+var _raceTypePipe = require('../../pipes/race-type-pipe');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
 
 Array.prototype.contains = function (obj) {
   var i = this.length;
@@ -51701,15 +51707,12 @@ Array.prototype.contains = function (obj) {
 
 
 
-NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-races', templateUrl: './components/next-races/next-races.html' }), _dec(_class = function () {
-  function NextRaces(http, ref) {_classCallCheck(this, NextRaces);
-    this.http = http;
+
+NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-races', templateUrl: 'components/next-races/next-races.html', pipes: [_raceTypePipe.RaceTypePipe] }), _dec(_class = function () {
+
+  function NextRaces(nextRacesService) {_classCallCheck(this, NextRaces);
     this.nextRacesData = {};
-    this.closestRaceData = this.getInitialRaceDataStructure();
-    //I would use that for js timestamp while checking with callback timestamp included in json, for this task I use static generated value
-    //this.currentTime = new Date().getTime();
-    this.currentTime = 1429890900;
-    this.ref = ref;
+    this.nextRacesService = nextRacesService;
     this.displayTypeD = true;
     this.displayTypeG = true;
     this.displayTypeJ = true;
@@ -51718,6 +51721,9 @@ NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-r
     this.displayTypeGClass = 'active';
     this.displayTypeJClass = 'active';
     this.displayTypeTClass = 'active';
+    this.activeFilters = ["G", "J", "T", "D"];
+
+    this.nextRacesData = this.nextRacesService.getMockedData();
 
   }_createClass(NextRaces, [{ key: 'ngOnInit', value: function ngOnInit()
 
@@ -51726,96 +51732,21 @@ NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-r
     } }, { key: 'getNextRacesData', value: function getNextRacesData()
 
     {var _this = this;
-      this.http.get('./next_races.json').
-      map(function (res) {return res.json();}).
-      subscribe(
-      function (res) {_this.nextRacesData = res;},
-      function (err) {return console.error(err);},
-      function () {
-        if (_this.nextRacesData.status === 'success')
-        _this.nextRacesData.filter_types = ["T", "D", "G", "J"];
-        _this.closestRaceData = _this.nextRacesData.data.races[0];
-        _this.getLatestRace();
-      });
+      this.nextRacesService.getNextRaces().
+      then(function (data) {_this.nextRacesData = data;});
 
-
-    } }, { key: 'getInitialRaceDataStructure', value: function getInitialRaceDataStructure()
-
-    {
-      return {
-        "id_race": null,
-        "event": {
-          "title": "",
-          "country": "" },
-
-        "race_type": "",
-        "post_time": null,
-        "diff_time": null,
-        "num_runners": null,
-        "distance": null,
-        "purse": {
-          "amount": null,
-          "currency": null },
-
-        "runners": [
-        {
-          "id_runner": null,
-          "name": "",
-          "odds": 0,
-          "silk": "" },
-
-        {
-          "id_runner": null,
-          "name": "",
-          "odds": 0,
-          "silk": "" },
-
-        {
-          "id_runner": null,
-          "name": "",
-          "odds": 0,
-          "silk": "" }],
-
-
-        //additional property
-        "filter_types": ["T", "D", "G", "J"] };
-
-    } }, { key: 'getLatestRace', value: function getLatestRace()
-
-    {
-      for (var i = 0; i < this.nextRacesData.data.races.length; i++) {
-        if (this.currentTime < this.nextRacesData.data.races[i].post_time && this.nextRacesData.filter_types.contains(this.nextRacesData.data.races[i].race_type) === true) {
-          this.closestRaceData = this.nextRacesData.data.races[i];
-          this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
-          i = this.nextRacesData.data.races.length;
-          this.ref.tick();
-        }
-
-        if (i === this.nextRacesData.data.races.length - 1) {
-          this.getNextRacesData();
-        }
-      }
-      this.closestRaceData.diff_time = parseInt(Math.floor((this.closestRaceData.post_time - this.currentTime) / 1000 / 60));
     } }, { key: 'setFiltering', value: function setFiltering(
 
-    race_type) {var _this2 = this;
+    race_type) {
       this.setButtons(race_type);
 
-      if (this.nextRacesData.filter_types.contains(race_type)) {
-        var i = this.nextRacesData.filter_types.indexOf(race_type);
+      if (this.activeFilters.contains(race_type)) {
+        var i = this.activeFilters.indexOf(race_type);
         if (i != -1) {
-          this.nextRacesData.filter_types.splice(i, 1);
-          setTimeout(function () {
-            console.log(_this2.nextRacesData.filter_types);
-            _this2.getLatestRace();
-          });
+          this.activeFilters.splice(i, 1);
         }
       } else {
-        this.nextRacesData.filter_types.push(race_type);
-        setTimeout(function () {
-          console.log(_this2.nextRacesData.filter_types);
-          _this2.getLatestRace();
-        });
+        this.activeFilters.push(race_type);
       }
     } }, { key: 'setButtons', value: function setButtons(
 
@@ -51838,9 +51769,9 @@ NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-r
           this.displayTypeJClass = this.displayTypeJ ? 'active' : '';
           break;}
 
-    } }]);return NextRaces;}()) || _class);Reflect.defineMetadata('design:paramtypes', [_http.Http, _core.ApplicationRef], NextRaces);
+    } }]);return NextRaces;}()) || _class);Reflect.defineMetadata('design:paramtypes', [_services.NextRacesService], NextRaces);
 
-},{"@angular/core":3,"@angular/http":4,"rxjs/add/operator/map":315}],358:[function(require,module,exports){
+},{"../../pipes/race-type-pipe":359,"../../services":360,"@angular/core":3}],358:[function(require,module,exports){
 'use strict';require('babel-polyfill');
 require('zone.js/dist/zone');
 
@@ -51850,7 +51781,117 @@ var _app = require('./app');
 
 (0, _platformBrowserDynamic.platformBrowserDynamic)().bootstrapModule(_app.AppModule);
 
-},{"./app":353,"@angular/platform-browser-dynamic":5,"babel-polyfill":8,"zone.js/dist/zone":352}]},{},[358])
+},{"./app":353,"@angular/platform-browser-dynamic":5,"babel-polyfill":8,"zone.js/dist/zone":352}],359:[function(require,module,exports){
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.RaceTypePipe = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _dec, _class;var _core = require('@angular/core');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
+
+Array.prototype.contains = function (obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] == obj) {
+            return true;
+        }
+    }
+    return false;
+};var
+
+
+
+
+
+
+
+RaceTypePipe = exports.RaceTypePipe = (_dec = (0, _core.Pipe)({ name: 'RaceTypePipe', pure: false }), _dec(_class = function () {function RaceTypePipe() {_classCallCheck(this, RaceTypePipe);}_createClass(RaceTypePipe, [{ key: 'transform', value: function transform(
+
+        value, args) {
+
+            var raceTypes = args;
+
+            return value.filter(function (race) {
+                return raceTypes.contains(race.race_type);
+            });
+        } }]);return RaceTypePipe;}()) || _class);
+
+},{"@angular/core":3}],360:[function(require,module,exports){
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.NextRacesService = undefined;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _core = require('@angular/core');
+var _http = require('@angular/http');
+require('rxjs/add/operator/map');function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
+
+
+NextRacesService = exports.NextRacesService = function () {
+
+  function NextRacesService(http) {_classCallCheck(this, NextRacesService);
+    this.http = http;
+  }_createClass(NextRacesService, [{ key: 'getNextRaces', value: function getNextRaces()
+
+    {
+      var nextRaces = {};
+
+      return new Promise(function (resolve, reject) {
+        // async stuff, like fetching users from server, returning a response
+        this.http.get('./next_races.json').
+        map(function (res) {return res.json();}).
+        subscribe(
+        function (res) {nextRaces = res;},
+        function (err) {return console.error('err');},
+        function () {
+          if (nextRaces.status === "success") {
+            nextRaces.data.races.forEach(function (item, index) {
+              var currentTime = new Date(1429890900), // just for mock purpose
+              raceTime = new Date(item.post_time);
+
+              item.post_time = raceTime.getHours() * 1000 * 60 + raceTime.getMinutes() -
+              currentTime.getHours() * 1000 * 60 - currentTime.getMinutes();
+
+              console.log(item.post_time);
+            });
+            resolve(nextRaces.data);
+          } else reject('No data');
+        });
+      }.bind(this));
+    } }, { key: 'getMockedData', value: function getMockedData()
+
+    {
+      return {
+        "races": [
+        {
+          "id_race": 1647215,
+          "event": {
+            "title": "Redcliffe",
+            "country": "IE" },
+
+          "race_type": "T",
+          "post_time": 1439970900,
+          "num_runners": 9,
+          "distance": 1780,
+          "purse": {
+            "amount": 250,
+            "currency": "GBP" },
+
+          "runners": [
+          {
+            "id_runner": 15717421,
+            "name": "Triumphant Knight",
+            "odds": 4.7,
+            "silk": "" },
+
+          {
+            "id_runner": 15717423,
+            "name": "My Aliyana",
+            "odds": 3,
+            "silk": "" },
+
+          {
+            "id_runner": 15717425,
+            "name": "Badjellys Courage",
+            "odds": 4,
+            "silk": "" }] }] };
+
+
+
+
+    } }]);return NextRacesService;}();Reflect.defineMetadata('design:paramtypes', [_http.Http], NextRacesService);
+
+},{"@angular/core":3,"@angular/http":4,"rxjs/add/operator/map":315}]},{},[358])
 
 
 //# sourceMappingURL=bundle.js.map

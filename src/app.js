@@ -5,9 +5,13 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpModule} from '@angular/http';
 import 'rxjs/add/operator/map';
 
+import { NextRacesService } from './services';
+
 import { RbHeader } from './components/header/header';
 import { RbFooter } from './components/footer/footer';
 import { RbIndex } from './components/index/index';
+
+import { RaceTypePipe } from './pipes/race-type-pipe';
 
 import { NextRaces } from './components/next-races/next-races';
 
@@ -44,10 +48,12 @@ const routing = RouterModule.forRoot([
     NextRaces,
     RbIndex,
     RbFooter,
+    RaceTypePipe,
     EmptyComponent
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    NextRacesService,
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [RbApp],
 })
