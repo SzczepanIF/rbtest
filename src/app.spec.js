@@ -1,61 +1,53 @@
 /* eslint-env jasmine */
 import { Component } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import { Injectable } from '@angular/core';
+import { Http, Response, HTTP_PROVIDERS} from '@angular/http';
+import 'rxjs/add/operator/map';
 
 import { NextRacesService } from './services';
-import { RbHeader, RbFooter, RbIndex, NextRaces} from './app';
+import { RbHeader } from './components/header/header';
+import { RbFooter } from './components/footer/footer';
+import { RbIndex } from './components/index/index';
+import { NextRaces } from './components/next-races/next-races';
+
+import { RaceTypePipe } from './pipes/race-type-pipe';
 
 describe('RbHeader', () => {
-  it('renders header content properly', () => {
-    TestBed.configureTestingModule({ declarations: [RbHeader]});
 
-    const fixture = TestBed.createComponent(RbHeader);
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.nativeElement.textContent).toEqual('RaceBets');
-  });
-});
-/*
-describe('Ciao', () => {
-  it('renders greeting', () => {
-    const params = { name: 'Babel' };
-    const url = [new UrlSegment('ciao', params)];
-    const route = new ActivatedRoute(Observable.of(url), Observable.of(params));
-    TestBed.configureTestingModule({
-      declarations: [Ciao],
-      providers: [Greeter, { provide: ActivatedRoute, useValue: route }],
-    });
-
-    const fixture = TestBed.createComponent(Ciao);
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.nativeElement.textContent).toEqual('Ciao, Babel!');
-  });
-});
-
-describe('Linker', () => {
   @Component({
-    template: '<linker url="http://foo.com" name="Foo"></linker>',
-    directives: [Linker],
+    template: '<header><h1>RaceBets</h1></header>',
+    directives: [RbHeader],
+    templateUrl: null
   })
   class Parent {}
 
-  it('renders a link with given attributes', () => {
-    TestBed.configureTestingModule({ declarations: [Parent, Linker] });
+  it('renders header content properly', () => {
 
-    const fixture = TestBed.createComponent(Parent);
-    fixture.detectChanges();
+   
+      TestBed.configureTestingModule({ declarations: [RbHeader]});
 
-    const linker = fixture.debugElement.children[0];
-    const instance = linker.componentInstance;
-    expect(instance.name).toEqual('Foo');
-    expect(instance.url).toEqual('http://foo.com');
-    const anchor = linker.nativeElement.querySelector('a');
-    expect(anchor.href).toEqual('http://foo.com/');
-    expect(anchor.title).toEqual('Foo');
-    expect(anchor.textContent).toEqual('Foo');
+      const fixture = TestBed.createComponent(RbHeader);
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.nativeElement.textContent).toContain('RaceBets');
   });
-});*/
+});
+
+describe('RbFooter', () => {
+
+  it('to have the author notice', () => {
+
+   
+      TestBed.configureTestingModule({ declarations: [RbFooter]});
+
+      const fixture = TestBed.createComponent(RbFooter);
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.nativeElement.textContent).toContain('Marcin Szczepanczyk');
+  });
+});
+
