@@ -22,13 +22,10 @@ export class NextRacesService {
                                 () => {
                                    if(nextRaces.status === "success") {
                                         nextRaces.data.races.forEach((item, index) => {
-                                                let currentTime = new Date(1429890900), // just for mock purpose
+                                                let currentTime = new Date(1439970500), // just for mock purpose
                                                     raceTime = new Date(item.post_time);
 
-                                                item.post_time = raceTime.getHours()*1000*60 + raceTime.getMinutes()
-                                                                    - currentTime.getHours()*1000*60 - currentTime.getMinutes();
-
-                                                console.log(item.post_time);
+                                                item.post_time = parseInt((raceTime - currentTime) /60);
                                         });
                                         resolve(nextRaces.data);
                                    } else reject('No data')
@@ -40,36 +37,36 @@ export class NextRacesService {
                 return {
                         "races": [
                               {
-                                "id_race": 1647215,
+                                "id_race": 0,
                                 "event": {
-                                  "title": "Redcliffe",
-                                  "country": "IE"
+                                  "title": "",
+                                  "country": ""
                                 },
-                                "race_type": "T",
-                                "post_time": 1439970900,
-                                "num_runners": 9,
-                                "distance": 1780,
+                                "race_type": "",
+                                "post_time": 0,
+                                "num_runners": 0,
+                                "distance": 0,
                                 "purse": {
-                                  "amount": 250,
-                                  "currency": "GBP"
+                                  "amount": 0,
+                                  "currency": ""
                                 },
                                 "runners": [
                                   {
-                                    "id_runner": 15717421,
-                                    "name": "Triumphant Knight",
-                                    "odds": 4.7,
+                                    "id_runner": 0,
+                                    "name": "",
+                                    "odds": 0,
                                     "silk": ""
                                   },
                                   {
-                                    "id_runner": 15717423,
-                                    "name": "My Aliyana",
-                                    "odds": 3,
+                                    "id_runner": 0,
+                                    "name": "",
+                                    "odds": 0,
                                     "silk": ""
                                   },
                                   {
-                                    "id_runner": 15717425,
-                                    "name": "Badjellys Courage",
-                                    "odds": 4,
+                                    "id_runner": 0,
+                                    "name": "",
+                                    "odds": 0,
                                     "silk": ""
                                   }
                                 ]

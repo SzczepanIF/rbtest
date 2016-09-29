@@ -368,6 +368,13 @@ td,
 th {
   padding: 0; }
 
+.blink_animation {
+  animation: blinker 1s linear infinite; }
+
+@keyframes blinker {
+  50% {
+    opacity: 0.7; } }
+
 body {
   font-size: 14px;
   font-family: Tahoma, Geneva, sans-serif;
@@ -385,46 +392,70 @@ body {
   .layout__wrapper .var_one_column .layout_column {
     flex-basis: 100%; }
   .layout__wrapper .var_three_columns {
-    display: flex; }
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 12px; }
     .layout__wrapper .var_three_columns .layout_column {
-      flex-basis: 25%;
+      width: 242px;
       margin: 12px 0; }
   .layout__wrapper rb-app {
     width: 100%; }
 
 header {
-  background: #333;
+  background: #666;
   padding: 12px;
   color: #fff; }
 
 footer {
-  background: #333;
+  background: #666;
   color: #fff;
   padding: 12px;
   text-align: right; }
 
 .next-races {
-  border: 4px solid #383838;
-  border-radius: 5px;
-  color: #fff;
-  background: #383838;
-  box-sizing: border-box;
-  font-size: 12px; }
+  font-size: 11px;
+  position: relative; }
+  .next-races__wrapper {
+    border: 4px solid #383838;
+    border-radius: 3px;
+    color: #fff;
+    box-sizing: border-box;
+    background: #383838;
+    transition: opacity 0.8s linear;
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    top: 55px; }
+    .next-races__wrapper.active {
+      position: static;
+      opacity: 1;
+      max-height: 1000px;
+      z-index: 2;
+      visibility: visible; }
   .next-races__title {
     font-weight: bold;
-    padding: 12px 6px;
-    border-bottom: 2px solid #666; }
+    padding: 12px 6px; }
     .next-races__title .time {
       float: right;
       font-weight: normal; }
+  .next-races__place {
+    border-bottom: 2px solid #666;
+    padding: 0 4px 12px; }
+    .next-races__place img {
+      border: 1px solid #C6C6C4;
+      vertical-align: top;
+      margin-right: 9px; }
   .next-races__info {
-    padding: 12px 0; }
+    padding: 12px 4px 3px;
+    overflow: hidden; }
     .next-races__info span {
       font-weight: normal;
       float: left;
       border-right: 1px solid #666;
-      padding-right: 5px;
-      padding-left: 5px; }
+      padding: 2px 5px; }
       .next-races__info span:first-child {
         padding-left: 0; }
       .next-races__info span:last-child {
@@ -433,7 +464,7 @@ footer {
         height: 15px;
         color: #fff;
         border: none;
-        font-size: 18px;
+        font-size: 21px;
         padding: 0;
         text-align: right; }
     .next-races__info span.next-races__prize {
@@ -445,21 +476,28 @@ footer {
     padding: 0;
     margin: 0; }
     .next-races__bet-list li {
-      padding: 24px 12px;
+      padding: 12px 8px;
       border-bottom: 2px solid #ccc;
       vertical-align: middle;
       height: 20px;
-      line-height: 20px; }
+      line-height: 20px;
+      cursor: pointer;
+      transition: background 0.2s; }
       .next-races__bet-list li:last-child {
         border: none; }
+      .next-races__bet-list li:hover {
+        background: #eee; }
     .next-races__bet-list__name {
       display: inline-block; }
+    .next-races__bet-list img {
+      width: 20px;
+      height: 20px; }
     img ~ .next-races__bet-list__name {
       position: relative;
-      top: -10px;
+      top: -6px;
       padding-left: 6px; }
     .next-races__bet-list__odds {
-      border-radius: 2px;
+      border-radius: 3px;
       border: 1px solid #F0C636;
       background: #fdd784;
       /* Old browsers */
@@ -469,44 +507,64 @@ footer {
       /* Chrome10-25,Safari5.1-6 */
       background: linear-gradient(to bottom, #fdd784 0%, #f5ae30 100%);
       /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      padding: 0 12px;
+      padding: 0 10px;
       text-align: center;
       color: #000;
       float: right;
       min-width: 14px; }
 
 .filters {
-  margin: 12px 6px;
-  list-style: none;
-  display: flex;
+  margin: 6px 0;
   box-sizing: border-box;
-  background: #fff;
-  border-radius: 5px;
-  padding: 0; }
+  background: #383838;
+  border: 4px solid #383838;
+  border-radius: 3px;
+  color: #fff;
+  box-sizing: border-box;
+  border-width: 8px;
+  border-radius: 0; }
+  .filters ul {
+    overflow: hidden;
+    border-radius: 3px;
+    display: flex;
+    background: #fff;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc; }
   .filters li {
     flex-basis: 25%;
     box-sizing: border-box;
-    font-size: 24px;
+    font-size: 30px;
+    height: 30px;
     color: #ddd;
-    padding-top: 10px;
     text-align: center;
     border-right: 1px solid #ccc;
     cursor: pointer;
     position: relative;
-    padding-left: 10px; }
+    padding-left: 7px;
+    transition: all 0.2s linear; }
+    .filters li:hover {
+      opacity: 0.8; }
     .filters li:after {
       position: absolute;
       content: ' ';
       background: #ddd;
       border-radius: 50%;
-      width: 5px;
-      height: 5px;
-      top: 16px;
-      left: 10px; }
+      width: 6px;
+      height: 6px;
+      top: 13px;
+      left: 5px;
+      transition: background-color 0.2s linear; }
+    .filters li:before {
+      position: relative;
+      top: -1px; }
     .filters li:last-child {
       border-right: none; }
     .filters li.active {
       color: #333; }
+      .filters li.active:after:hover {
+        background: #ddd; }
       .filters li.active:nth-child(1):after {
         background: #3F8E17; }
       .filters li.active:nth-child(2):after {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, trigger, state, style, transition, animate  } from '@angular/core';
 import { NextRacesService } from '../../services';
 import { RaceTypePipe } from '../../pipes/race-type-pipe';
 
@@ -15,7 +15,19 @@ Array.prototype.contains = function(obj) {
 @Component({
   selector: 'next-races',
   templateUrl: 'components/next-races/next-races.html',
-  pipes: [RaceTypePipe]
+  pipes: [RaceTypePipe],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate(100)
+      ]),
+      transition('* => void', [
+        animate(100, style({transform: 'translateX(100%)'}))
+      ])
+    ])
+  ]
 })
 
 export class NextRaces {
@@ -31,7 +43,8 @@ export class NextRaces {
   	this.displayTypeGClass = 'active';
   	this.displayTypeJClass = 'active';
   	this.displayTypeTClass = 'active';
-    this.activeFilters = ["G", "J", "T", "D"]
+    this.activeFilters = ["G", "J", "T", "D"];
+    this.postTimeUpdateInterval;
 
     this.nextRacesData = this.nextRacesService.getMockedData();
 
@@ -43,8 +56,24 @@ export class NextRaces {
 
   getNextRacesData() {
       this.nextRacesService.getNextRaces()
-        .then((data) => { this.nextRacesData = data; })
+        .then((data) => {
+         this.nextRacesData = data;
 
+         clearInterval(this.postTimeUpdateInterval);
+         this.postTimeUpdateInterval = setInterval(() => {
+            console.log('dzialam');
+            this.nextRacesData.races.forEach((item, index) => {
+              item.post_time--;
+              if (item.post_time === 0) {
+                  this.nextRacesData.races.splice(index, 1);
+
+                  if (this.nextRacesData.races.length === 0) {
+                    //take a new request
+                  }
+              }
+            });
+         }, 60000);
+       })
   }
 
   setFiltering(race_type) {
