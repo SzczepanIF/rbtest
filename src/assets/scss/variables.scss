@@ -5,7 +5,7 @@ $baseFontFamily: Tahoma, Geneva, sans-serif;
 //colors
 
 $plainBgColor: #fff;
-$mainBgColor: #333;
+$mainBgColor: #666;
 $secondaryBgColor: #fec544;
 
 //font colors
@@ -19,6 +19,17 @@ $basePaddingDouble: $basePadding * 2;
 
 $boxHorizontalPadding: 10px;
 $boxVerticalPadding: 12px;
+
+//animations
+$basicAnimationSpeed: 0.2s;
+
+.blink_animation {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0.7; }
+}
 
 
 body {

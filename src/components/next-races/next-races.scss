@@ -2,17 +2,37 @@ $moduleName: 'next-races';
 $moduleColorVariant: #383838;
 $moduleBorderColor: #333;
 $listColor: #686868;
+$flagueBorderColor: #C6C6C4;
 
 
 .#{$moduleName} {
-	@include standardBox($moduleColorVariant);
-	font-size: 12px;
+	font-size: 11px;
+	position: relative;
+
+	&__wrapper {
+		@include standardBox($moduleColorVariant);
+		background: $moduleColorVariant;
+		transition: opacity 0.8s linear;
+		visibility: hidden;
+		opacity: 0;
+		max-height: 0;
+		overflow: hidden;
+		position: absolute;
+		z-index: 1;
+		top: 55px;
+
+		&.active {
+			position: static;
+			opacity: 1;
+			max-height: 1000px;
+			z-index: 2;
+			visibility: visible;
+		}
+	}
 
 	&__title {
 		font-weight:bold;
 		padding: $basePadding $basePaddingHalf;
-		border-bottom: 2px solid #666;
-
 
 		.time {
 			float: right;
@@ -20,14 +40,26 @@ $listColor: #686868;
 		}
 	}
 
+	&__place {
+		border-bottom: 2px solid #666;
+		padding: 0 4px 12px;
+
+		img {
+			border: 1px solid $flagueBorderColor;
+			vertical-align: top;
+			margin-right: 9px;
+		}
+	}
+
 	&__info {
-		padding: $basePadding 0;
+		padding: $basePadding 4px 3px;
+		overflow: hidden;
+
 		span {
 			font-weight: normal;
 			float: left;
 			border-right: 1px solid #666;
-			padding-right: 5px;
-			padding-left: 5px;
+			padding: 2px 5px;	
 
 			&:first-child {
 				padding-left: 0;
@@ -39,7 +71,7 @@ $listColor: #686868;
 				height: 15px;
 				color: #fff;
 				border: none;
-				font-size: 18px;
+				font-size: 21px;
 				padding:0 ;
 				text-align:right;
 			}
@@ -59,23 +91,34 @@ $listColor: #686868;
 		margin: 0; 
 
 		li {
-			padding: $basePaddingDouble $basePadding;
+			padding: $basePadding 8px;
 			border-bottom: 2px solid #ccc;
 			vertical-align: middle;
 			height: 20px;
 			line-height: 20px;
+			cursor: pointer;
+			transition: background $basicAnimationSpeed;
 
 			&:last-child {
 				border: none;
+			}
+
+			&:hover {
+				background: #eee;
 			}
 		}
 
 		&__name {
 			display: inline-block;
 		}
+
+		img {
+			width: 20px;
+			height: 20px;
+		}
 		img ~ &__name {
 			position: relative;
-			top: -10px;
+			top: -6px;
 			padding-left: $basePaddingHalf;
 		}
 
@@ -88,35 +131,55 @@ $listColor: #686868;
 }
 
 .filters {
-	margin: $basePadding $basePaddingHalf;
-	list-style: none;
-	display: flex;
+	margin: $basePaddingHalf 0;
 	box-sizing: border-box;
-	background: #fff;
-	border-radius: 5px;
-	padding:0;
+	background: $moduleColorVariant;
+	@include standardBox($moduleColorVariant);
+	border-width: 8px;
+	border-radius: 0;
+
+	ul {
+		overflow: hidden;
+		border-radius: 3px;
+		display: flex;
+		background: #fff;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		border: 1px solid #ccc;
+	}
+	
 
 	li {
 		flex-basis: 25%;
 		box-sizing: border-box;
-		font-size: 24px;
+		font-size: 30px;
+		height: 30px;
 		color: #ddd;
-		padding-top: 10px;
 		text-align:center;
 		border-right: 1px solid #ccc;
 		cursor: pointer;
 		position: relative;
-		padding-left: 10px;
+		padding-left: 7px;
+		@include transitionAnimation;
+
 
 		&:after {
 			position: absolute;
 			content: ' ';
 			background: #ddd;
 			border-radius: 50%;
-			width: 5px;
-			height: 5px;
-			top: 16px;
-			left: 10px;
+			width: 6px;
+			height: 6px;
+			top: 13px;
+			left: 5px;
+			transition: background-color $basicAnimationSpeed linear;
+
+		}
+
+		&:before {
+			position: relative;
+			top: -1px;
 		}
 
 
@@ -126,6 +189,12 @@ $listColor: #686868;
 
 		&.active {
 			color: #333;
+
+			&:after {
+				&:hover {
+					background: #ddd;
+				}
+			}
 
 			&:nth-child(1) {
 				&:after {

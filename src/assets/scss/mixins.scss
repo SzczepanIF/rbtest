@@ -1,19 +1,26 @@
 @mixin standardBox($mainColor) {
 	border: 4px solid $mainColor;
-	border-radius: 5px;
+	border-radius: 3px;
 	color: #fff;
-	background: $mainColor;
 	box-sizing: border-box;
 }
 
 @mixin goldenButton {
-	border-radius: 2px;
+	border-radius: 3px;
 	border: 1px solid #F0C636;
 	background: #fdd784; /* Old browsers */
 	background: -moz-linear-gradient(top, #fdd784 0%, #f5ae30 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(top, #fdd784 0%,#f5ae30 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to bottom, #fdd784 0%,#f5ae30 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	padding: 0 $basePadding;
+	padding: 0 10px;
 	text-align: center;
 	color: #000;
+}
+
+@mixin transitionAnimation {
+	transition: all $basicAnimationSpeed linear;
+
+	&:hover {
+		opacity: 0.8;
+	}
 }

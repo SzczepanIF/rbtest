@@ -19,9 +19,11 @@ body {
 
 	.var_three_columns {
 		display: flex;
+		box-sizing: border-box;
+		padding: 0 $basePadding;
 
 		.layout_column {
-			flex-basis: 25%;
+			width: 242px;
 			margin: $basePadding 0;
 		}
 	}

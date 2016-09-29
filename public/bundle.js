@@ -51719,7 +51719,19 @@ Array.prototype.contains = function (obj) {
 
 
 
-NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-races', templateUrl: 'components/next-races/next-races.html', pipes: [_raceTypePipe.RaceTypePipe] }), _dec(_class = function () {
+
+
+
+
+
+
+
+
+
+
+
+
+NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-races', templateUrl: 'components/next-races/next-races.html', pipes: [_raceTypePipe.RaceTypePipe], animations: [(0, _core.trigger)('flyInOut', [(0, _core.state)('in', (0, _core.style)({ transform: 'translateX(0)' })), (0, _core.transition)('void => *', [(0, _core.style)({ transform: 'translateX(-100%)' }), (0, _core.animate)(100)]), (0, _core.transition)('* => void', [(0, _core.animate)(100, (0, _core.style)({ transform: 'translateX(100%)' }))])])] }), _dec(_class = function () {
 
   function NextRaces(nextRacesService) {_classCallCheck(this, NextRaces);
     this.nextRacesData = {};
@@ -51733,6 +51745,7 @@ NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-r
     this.displayTypeJClass = 'active';
     this.displayTypeTClass = 'active';
     this.activeFilters = ["G", "J", "T", "D"];
+    this.postTimeUpdateInterval;
 
     this.nextRacesData = this.nextRacesService.getMockedData();
 
@@ -51744,8 +51757,24 @@ NextRaces = exports.NextRaces = (_dec = (0, _core.Component)({ selector: 'next-r
 
     {var _this = this;
       this.nextRacesService.getNextRaces().
-      then(function (data) {_this.nextRacesData = data;});
+      then(function (data) {
+        _this.nextRacesData = data;
 
+        clearInterval(_this.postTimeUpdateInterval);
+        _this.postTimeUpdateInterval = setInterval(function () {
+          console.log('dzialam');
+          _this.nextRacesData.races.forEach(function (item, index) {
+            item.post_time--;
+            if (item.post_time === 0) {
+              _this.nextRacesData.races.splice(index, 1);
+
+              if (_this.nextRacesData.races.length === 0) {
+                //take a new request
+              }
+            }
+          });
+        }, 60000);
+      });
     } }, { key: 'setFiltering', value: function setFiltering(
 
     race_type) {
@@ -51848,13 +51877,10 @@ NextRacesService = exports.NextRacesService = function () {
         function () {
           if (nextRaces.status === "success") {
             nextRaces.data.races.forEach(function (item, index) {
-              var currentTime = new Date(1429890900), // just for mock purpose
+              var currentTime = new Date(1439970500), // just for mock purpose
               raceTime = new Date(item.post_time);
 
-              item.post_time = raceTime.getHours() * 1000 * 60 + raceTime.getMinutes() -
-              currentTime.getHours() * 1000 * 60 - currentTime.getMinutes();
-
-              console.log(item.post_time);
+              item.post_time = parseInt((raceTime - currentTime) / 60);
             });
             resolve(nextRaces.data);
           } else reject('No data');
@@ -51866,36 +51892,36 @@ NextRacesService = exports.NextRacesService = function () {
       return {
         "races": [
         {
-          "id_race": 1647215,
+          "id_race": 0,
           "event": {
-            "title": "Redcliffe",
-            "country": "IE" },
+            "title": "",
+            "country": "" },
 
-          "race_type": "T",
-          "post_time": 1439970900,
-          "num_runners": 9,
-          "distance": 1780,
+          "race_type": "",
+          "post_time": 0,
+          "num_runners": 0,
+          "distance": 0,
           "purse": {
-            "amount": 250,
-            "currency": "GBP" },
+            "amount": 0,
+            "currency": "" },
 
           "runners": [
           {
-            "id_runner": 15717421,
-            "name": "Triumphant Knight",
-            "odds": 4.7,
+            "id_runner": 0,
+            "name": "",
+            "odds": 0,
             "silk": "" },
 
           {
-            "id_runner": 15717423,
-            "name": "My Aliyana",
-            "odds": 3,
+            "id_runner": 0,
+            "name": "",
+            "odds": 0,
             "silk": "" },
 
           {
-            "id_runner": 15717425,
-            "name": "Badjellys Courage",
-            "odds": 4,
+            "id_runner": 0,
+            "name": "",
+            "odds": 0,
             "silk": "" }] }] };
 
 
