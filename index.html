@@ -8,17 +8,11 @@
   </head>
   <body>
     <div class="layout__wrapper">
-      <header>
-      	<h1>RaceBets</h1>
-      </header>
-      <h2>Next Races box</h2>
-      <ul>
-      	<li><a href='#'>Next Race Box (with Filters)</a></li>
-      </ul>
-      <footer>
-      	<span>Marcin Szczepanczyk &copy; 2016</span>
-      </footer>
-    </div>
+          <rb-app><rb-header><header><h1>RaceBets</h1></header></rb-header><rb-index><h2>Next Races box</h2>
+    <ul>
+    	<li><a ng-reflect-router-link="/nextraces" ng-reflect-href="#/nextraces" href="#/nextraces">Next Race Box (with Filters)</a></li>
+    </ul></rb-index> <div class="var_three_columns"><div class="layout_column"><router-outlet></router-outlet><empty-component></empty-component></div></div><rb-footer><footer><span>Marcin Szczepanczyk © 2016</span></footer></rb-footer></rb-app>
+        </div>
 
   </body>
 </html>
